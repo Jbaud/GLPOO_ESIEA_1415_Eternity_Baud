@@ -8,7 +8,7 @@ Pour utiliser ce git ->
       1. Ouvrez un terminal, puis installez git et configurez le.
       2. Puis dans votre dossier de dev, la commande 
     
-        **git** **clone** **https://github.com/Jbaud/GLPOO.git**
+        git clone https://github.com/Jbaud/GLPOO.git
       
     
       Cela va creer un dossier GLPOO, vous pouvez normalement l'importer dans Eclipse.
