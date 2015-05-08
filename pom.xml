@@ -48,6 +48,12 @@
 			<version>${log4j.version}</version>
 		</dependency>
 
+	    <!-- OpenCSV -->
+		<dependency>
+		<groupId>net.sf.opencsv</groupId>
+		<artifactId>opencsv</artifactId>
+		<version>2.3</version>
+		</dependency>
 		<!-- TODO Mettre les autres lib a la suite -->
 
 	</dependencies>
