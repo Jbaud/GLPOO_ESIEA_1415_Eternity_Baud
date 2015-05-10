@@ -1,6 +1,6 @@
-import java.awt.*;
 import java.awt.event.*;
 import java.awt.Graphics2D; //pour les events repaint
+import java.awt.Color;
 import javax.swing.*;
 import java.util.*;
 import java.lang.Math;
@@ -44,7 +44,10 @@ public class Gui extends JFrame
 	ImageIcon coucheCoeur = new ImageIcon("couleur-coeur.png");
 	SuperpoIcon imageChouette = new SuperpoIcon(imageBase);
 	RotateIcon imageTournee;
-	RotateIcon imageComposeeTournee;
+
+	List<String> faces = new ArrayList<String>();
+	Piece piece;
+	SuperpoRotateIcon imageComposeeTournee;
 
 	public Gui()
 	{
@@ -89,16 +92,22 @@ public class Gui extends JFrame
 		//////////////////////////////////////////////////////
 		
 
+		faces.add("faces/couleur-bandes.png");
+		faces.add("faces/couleur-etoile.png");
+		faces.add("faces/couleur-shuriken.png");
+		faces.add("faces/couleur-zigzag.png");
+		piece = new Piece(faces);
+		imageComposeeTournee = new SuperpoRotateIcon(piece,Orientation.OUEST);
+
 		imageChouette.ajoutCouche(coucheCoeur);
-		imageTournee = new RotateIcon(imageTruc,RotateIcon.Orientation.EST);
-		imageComposeeTournee = new RotateIcon(imageChouette,RotateIcon.Orientation.OUEST);
+		imageTournee = new RotateIcon(imageTruc,Orientation.EST);
 
 		//Tableau de données
 		Object[][] donnees =
 		{
 			{imageChouette,Color.red,imageTruc},
 			{imageTournee,Color.blue,imageBidule},
-			{"pieceC",Color.yellow,imageMachin}
+			{imageComposeeTournee,Color.yellow,imageTruc}
 		};
 
 		//Tableau de titres
@@ -108,7 +117,7 @@ public class Gui extends JFrame
 		this.table = new JTable(modele);
 		System.out.println("Nb colonnes : "+modele.getColumnCount());
 		System.out.println("Nb lignes : "+modele.getRowCount());
-		table.setDefaultRenderer(Color.class, new ColorCellRenderer());
+		table.setDefaultRenderer(ImageIcon.class, new BorderRenderer(table.getDefaultRenderer(ImageIcon.class)));
 
 		this.table.setRowHeight(150);
 		this.getContentPane().add(table);

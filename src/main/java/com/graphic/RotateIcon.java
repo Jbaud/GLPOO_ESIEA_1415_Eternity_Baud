@@ -7,16 +7,8 @@ import javax.swing.Icon;
 
 public class RotateIcon extends ImageIcon
 {
-	private ImageIcon icone;
-	private Orientation orientation;
-	private double angle;
-	public enum Orientation
-	{
-		NORD,
-		EST,
-		SUD,
-		OUEST;
-	}
+	ImageIcon icone;
+	Orientation orientation;
 
 	//Constructeur nord par défaut
 	public RotateIcon(ImageIcon icone)
