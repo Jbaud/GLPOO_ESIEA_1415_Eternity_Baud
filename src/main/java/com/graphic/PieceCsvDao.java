@@ -10,23 +10,22 @@ import java.lang.*;
 public class PieceCsvDao
 {
 	private int iterateur;
-	private FaceCsvDao facesDao;
 	private List<Face> faces;
 	private Map<Integer,Face> facesHmap;
 	private Map<Integer,Piece> piecesHmap;
+	private BufferedReader br;
+	private String ligne;
 
-	public PieceCsvDao()
+	public PieceCsvDao(Map<Integer,Face> facesHmap)
 	{
-		//Constructeur
+		ligne = "";
+		faces = new ArrayList<Face>();
+		this.facesHmap = facesHmap;
+		piecesHmap = new HashMap<Integer,Piece>();
 	}
 
-	public Map<Integer,Piece> parser(String fichier,BufferedReader br,String ligne,String separateur)
+	public Map<Integer,Piece> parser(String fichier,String separateur)
 	{
-		facesDao = new FaceCsvDao();
-		faces = new ArrayList<Face>();
-		facesHmap = facesDao.parser("lulz", br, ligne, separateur);
-		piecesHmap = new HashMap<Integer,Piece>();
-		
 		//initialisation du BufferReader
 		try
 		{
@@ -39,16 +38,19 @@ public class PieceCsvDao
 		//Lecture et parsing
 		//STRUCTURE CSV : (int)id_piece, (int)id_face_1, (int)id_face_2, (int)id_face_3, (int)id_face_4
 		try {
-			while ((ligne = br.readLine()) != null) {
-
-				//on met la piece creee dans la hmap 'pieces'
-				//CONSTRUCTEUR PIECE [pour rappel] : Piece (int id, List<Face> faces)
-				String[] contenu = ligne.split(separateur);
-				faces.add(facesHmap.get(Integer.parseInt(contenu[1],10))); //face_1
-				faces.add(facesHmap.get(Integer.parseInt(contenu[2],10))); //face_2
-				faces.add(facesHmap.get(Integer.parseInt(contenu[3],10))); //face_3
-				faces.add(facesHmap.get(Integer.parseInt(contenu[4],10))); //face_4
-				piecesHmap.put(Integer.parseInt(contenu[0],10),new Piece(Integer.parseInt(contenu[0],10), faces));
+			while ((ligne = br.readLine()) != null)
+			{
+				if(!ligne.startsWith("#"))
+				{
+					//on met la piece creee dans la hmap 'pieces'
+					//CONSTRUCTEUR PIECE [pour rappel] : Piece (int id, List<Face> faces)
+					String[] contenu = ligne.split(separateur);
+					faces.add(facesHmap.get(Integer.parseInt(contenu[1],10))); //face_1
+					faces.add(facesHmap.get(Integer.parseInt(contenu[2],10))); //face_2
+					faces.add(facesHmap.get(Integer.parseInt(contenu[3],10))); //face_3
+					faces.add(facesHmap.get(Integer.parseInt(contenu[4],10))); //face_4
+					piecesHmap.put(Integer.parseInt(contenu[0],10),new Piece(Integer.parseInt(contenu[0],10), faces));
+				}
 			}
 		} catch (NumberFormatException e) {
 			// TODO Auto-generated catch block

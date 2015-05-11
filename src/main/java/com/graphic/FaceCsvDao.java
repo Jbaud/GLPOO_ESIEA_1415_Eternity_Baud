@@ -10,16 +10,17 @@ import java.lang.*;
 public class FaceCsvDao
 {
 	private Map<Integer,Face> facesHmap;
+	private BufferedReader br;
+	private String ligne;
 
 	public FaceCsvDao()
 	{
-		//constructeur	
+		ligne = "";
+		facesHmap = new HashMap<Integer,Face>();
 	}
 
- 	public Map<Integer,Face> parser(String fichier,BufferedReader br,String ligne,String separateur)
+ 	public Map<Integer,Face> parser(String fichier,String separateur)
 	{
-		facesHmap = new HashMap<Integer,Face>();
-
 		//initialisation du BufferReader
 		try
 		{
@@ -35,10 +36,13 @@ public class FaceCsvDao
 		{
 			while ((ligne = br.readLine()) != null)
 			{
-				String[] contenu = ligne.split(separateur);
-				//on met la face creee dans la hmap 'facesHmap'
-				//CONSTRUCTEUR FACE [pour rappel] : Face(int id, String nom, char type)
-				facesHmap.put(Integer.parseInt(contenu[0],10), new Face(Integer.parseInt(contenu[0],10), contenu[1], contenu[2].charAt(0)));
+				if(!ligne.startsWith("#"))
+				{
+					String[] contenu = ligne.split(separateur);
+					//on met la face creee dans la hmap 'facesHmap'
+					//CONSTRUCTEUR FACE [pour rappel] : Face(int id, String nom, char type)
+					facesHmap.put(Integer.parseInt(contenu[0],10), new Face(Integer.parseInt(contenu[0],10), contenu[1], contenu[2].charAt(0)));
+				}
 			}
 		} catch (NumberFormatException e) {
 			e.printStackTrace();

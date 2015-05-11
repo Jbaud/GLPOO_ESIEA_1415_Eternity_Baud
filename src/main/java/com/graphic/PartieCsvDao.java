@@ -9,21 +9,22 @@ import java.lang.*;
 
 public class PartieCsvDao
 {
-	private PieceCsvDao piecesDao;
-	private Map<Integer, Piece> piecesHmap; // a voir plus tard
+	private Map<Integer, Piece> piecesHmap;
 	private Partie[][] partie;
+	private BufferedReader br;
+	private String ligne;
 
-	public PartieCsvDao()
+	public PartieCsvDao(Map<Integer, Piece> piecesHmap)
 	{
+		ligne = "";
+		this.piecesHmap = piecesHmap;
+		partie = new Partie[4][4];
+
 	}
 
-	public Partie[][] parser(String fichier,BufferedReader br,String ligne,String separateur)
+	public Partie[][] parser(String fichier,String separateur)
 	{
-		piecesDao = new PieceCsvDao();
-		piecesHmap = piecesDao.parser("lulz", br, ligne, separateur); // a voir plus tard
-		partie = new Partie[4][4];
-		
-		//initialisation du BufferReader
+		//initialisation du BufferedReader
 		try
 		{
 			br = new BufferedReader(new FileReader(fichier));
@@ -37,11 +38,14 @@ public class PartieCsvDao
 		{
 			while ((ligne = br.readLine()) != null)
 			{
-				String[] contenu = ligne.split(separateur);
-				//on lit le csv partie, on récup les pièces, on place dans le tableau partie[][] aux coord
-				//CONSTRUCTEUR PARTIE [pour rappel] : Partie(Piece piece, int x, int y, Orientation orientation)
-				partie[Integer.parseInt(contenu[1],10)][Integer.parseInt(contenu[2],10)] =
-					new Partie(piecesHmap.get(Integer.parseInt(contenu[0],10)), Integer.parseInt(contenu[1],10), Integer.parseInt(contenu[2],10), Orientation.valueOf(contenu[3]));			
+				if(!ligne.startsWith("#"))
+				{
+					String[] contenu = ligne.split(separateur);
+					//on lit le csv partie, on récup les pièces, on place dans le tableau partie[][] aux coord
+					//CONSTRUCTEUR PARTIE [pour rappel] : Partie(Piece piece, int x, int y, Orientation orientation)
+					partie[Integer.parseInt(contenu[1],10)][Integer.parseInt(contenu[2],10)] =
+						new Partie(piecesHmap.get(Integer.parseInt(contenu[0],10)), Integer.parseInt(contenu[1],10), Integer.parseInt(contenu[2],10), Orientation.valueOf(contenu[3]));	
+				}
 			}
 		} catch (NumberFormatException e)
 		{
@@ -51,7 +55,7 @@ public class PartieCsvDao
 			e.printStackTrace();
 		}
 
-		//fermeture du BufferReader
+		//fermeture du BufferedReader
 		finally
 		{
 			if (br != null)
