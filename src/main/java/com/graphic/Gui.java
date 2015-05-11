@@ -46,9 +46,18 @@ public class Gui extends JFrame
 	private JButton menuLabel;
 	private JButton sauveLabel;
 
+	//Elements de jeu
+	private String fichierFaces;
+	private String fichierPieces;
+	private String fichierPartie;
+	private Map<Integer,Face> faceHmap;
+	private Map<Integer,Piece> piecesHmap;
+	private FaceCsvDao facesDao;
+	private PieceCsvDao piecesDao;
+	private PartieCsvDao partieDao;
+	private Partie[][] partie;
 	private JButton testCerveau;
 	private SuperpoRotateIcon imageComposeeTournee;
-	private SuperpoRotateIcon[][] partie;
 
 	public Gui()
 	{
@@ -61,14 +70,29 @@ public class Gui extends JFrame
 		initObjects();
 		initBarreMenu();
 		initPanel();
+		initPartie();
 		initPlateau();
-
+		
 		//ajout des panel à la frame
 		this.add(panelPuzzle);
 		this.add(panelOutil);
 
 		//autorisation de l'affichage
 		this.setVisible(true);
+	}
+
+	private void initPartie()
+	{
+		fichierFaces = "faces.csv";
+		fichierPieces = "pieces.csv";
+		fichierPartie = "partie.csv";
+		partie = new Partie[taille][taille];
+		facesDao = new FaceCsvDao();
+		faceHmap = facesDao.parser(fichierFaces,",");
+		piecesDao = new PieceCsvDao(faceHmap);
+		piecesHmap = piecesDao.parser(fichierPieces,",");
+		partieDao = new PartieCsvDao(piecesHmap);
+		partie = partieDao.parser(fichierPartie,",");
 	}
 
 	private void initPlateau()
@@ -78,7 +102,7 @@ public class Gui extends JFrame
 		{
 			for (int col=0; col<taille; col++)
 			{
-				//plateau[lin][col] = new JButton("",partie[lin][col]);
+				plateau[lin][col] = new JButton("",new SuperpoRotateIcon(partie[lin][col].piece, partie[lin][col].orientation));
 				plateau[lin][col].setBackground(Color.BLACK);
 				plateau[lin][col].setBounds(5+5*lin+150*lin, 5+5*col+150*col, 150, 150); //marge intercell 5, taille cell 150
 				panelPuzzle.add(plateau[lin][col]);
@@ -151,7 +175,8 @@ public class Gui extends JFrame
 		sauveLabel = new JButton("Sauvegarder");
 
 		//taille pour les tableaux
-		//taille = 4;
+		taille = 4;
+
 		testCerveau = new JButton("",imageComposeeTournee);
 	}
 
