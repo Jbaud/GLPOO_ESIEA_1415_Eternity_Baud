@@ -56,27 +56,6 @@ public class Gui extends JFrame
 		super();
 		System.out.println("Graphic User Interface is being set");
 
-
-
-		//----A ENLEVER PLUS TARD ----//
-		List<String> faces = new ArrayList<String>();
-		Piece piece;
-		faces.add("faces/couleur-bandes.png");
-		faces.add("faces/couleur-etoile.png");
-		faces.add("faces/couleur-shuriken.png");
-		faces.add("faces/couleur-zigzag.png");
-		piece = new Piece(faces);
-		imageComposeeTournee = new SuperpoRotateIcon(piece,Orientation.OUEST);
-		taille = 4;
-		partie = new SuperpoRotateIcon[taille][taille];
-    	for (int lin=0; lin<taille; lin++)
-    	{
-    		for (int col=0; col<taille; col++)
-    		{
-    			partie[lin][col] = imageComposeeTournee;
-    		}
-    	}
-
 		//initialisations diverses
 		initFenetre();
 		initObjects();
@@ -90,26 +69,26 @@ public class Gui extends JFrame
 
 		//autorisation de l'affichage
 		this.setVisible(true);
-    }
+	}
 
-    private void initPlateau()
-    {
-    	plateau = new JButton[taille][taille];
-    	for (int lin=0; lin<taille; lin++)
-    	{
-    		for (int col=0; col<taille; col++)
-    		{
-    			plateau[lin][col] = new JButton("",partie[lin][col]);
+	private void initPlateau()
+	{
+		plateau = new JButton[taille][taille];
+		for (int lin=0; lin<taille; lin++)
+		{
+			for (int col=0; col<taille; col++)
+			{
+				//plateau[lin][col] = new JButton("",partie[lin][col]);
 				plateau[lin][col].setBackground(Color.BLACK);
-    			plateau[lin][col].setBounds(5+5*lin+150*lin, 5+5*col+150*col, 150, 150); //marge intercell 5, taille cell 150
-    			panelPuzzle.add(plateau[lin][col]);
-    		}
-    	}
-    }
+				plateau[lin][col].setBounds(5+5*lin+150*lin, 5+5*col+150*col, 150, 150); //marge intercell 5, taille cell 150
+				panelPuzzle.add(plateau[lin][col]);
+			}
+		}
+	}
 
-    private void initBarreMenu()
-    {
-    	//Barre de menu
+	private void initBarreMenu()
+	{
+		//Barre de menu
 		barreMenu = new JMenuBar();
 		fichier = new JMenu("Fichier");
 		aide = new JMenu("Aide");
@@ -156,10 +135,10 @@ public class Gui extends JFrame
 					JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-    }
+	}
 
-    private void initObjects()
-    {
+	private void initObjects()
+	{
 		//images pour le panel outil
 		imageFlecheDroite = new ImageIcon("images/flecheTourneDroite.png");
 		imageFlecheGauche = new ImageIcon("images/flecheTourneGauche.png");
@@ -174,11 +153,11 @@ public class Gui extends JFrame
 		//taille pour les tableaux
 		//taille = 4;
 		testCerveau = new JButton("",imageComposeeTournee);
-    }
+	}
 
-    private void initFenetre()
-    {
-    	frame = this;
+	private void initFenetre()
+	{
+		frame = this;
 		curseurFleche = new Cursor(Cursor.DEFAULT_CURSOR);
 
 		//proprietes de la fenetre
@@ -190,11 +169,11 @@ public class Gui extends JFrame
 
 		//Curseur fleche
 		setCursor(curseurFleche);
-    }
+	}
 
-    private void initPanel()
-    {
-    	plateau = null;
+	private void initPanel()
+	{
+		plateau = null;
 		panelOutil = new JPanel();
 		panelPuzzle = new JPanel();
 
@@ -230,5 +209,5 @@ public class Gui extends JFrame
 		droiteLabel.setBorderPainted(false);
 		gaucheLabel.setContentAreaFilled(false);
 		gaucheLabel.setBorderPainted(false);
-    }
+	}
 }

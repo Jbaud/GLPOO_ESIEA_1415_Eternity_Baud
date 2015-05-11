@@ -8,33 +8,35 @@ import javax.swing.Icon;
 public class SuperpoRotateIcon extends ImageIcon
 {
 	private List<ImageIcon> couches;
-	private List<String> faces;
+	private List<Face> faces;
 	private Orientation orientation;
 
+	//On va construire une SuperpoRotateIcon à partir d'une case (de partie[][]) passée en param
+
 	//Constructeur nord par défaut
-	public SuperpoRotateIcon(Piece piece)
+	public SuperpoRotateIcon(Partie partie)
 	{
-		this.faces = piece.getFaces();
+		this.faces = partie.piece.getFaces();
 		this.couches = new ArrayList<ImageIcon>();
-		//boucle for qui transforme liste string en liste imageicon
-		for (String str : faces)
+		//boucle for qui transforme liste Face en liste ImageIcon
+		for (Face face : faces)
 		{
-			couches.add(new ImageIcon(str));
+			couches.add(new ImageIcon(face.getUrl()));
 		}
 		this.orientation = Orientation.NORD;
 	}
 
 	//Constructeur ave orientation
-	public SuperpoRotateIcon(Piece piece, Orientation orientation)
+	public SuperpoRotateIcon(Partie partie, Orientation orientation)
 	{
-		this.faces = piece.getFaces();
+		this.faces = partie.piece.getFaces();
 		this.couches = new ArrayList<ImageIcon>();
-		//boucle for qui transforme liste string en liste imageicon
-		for (String str : faces)
+		//boucle for qui transforme liste Face en liste ImageIcon
+		for (Face face : faces)
 		{
-			couches.add(new ImageIcon(str));
+			couches.add(new ImageIcon(face.getUrl()));
 		}
-		this.orientation = orientation;
+		this.orientation = partie.orientation;
 	}
 
 	public void rotateDroite()
