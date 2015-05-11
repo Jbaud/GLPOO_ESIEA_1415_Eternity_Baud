@@ -8,7 +8,7 @@ public class Piece
 	
 	public Piece (int id, List<Face> faces)
 	{
-		faces = new ArrayList<Face>();
+		this.faces = faces;
 		this.id = id;
 		this.faces = faces;		
 	}

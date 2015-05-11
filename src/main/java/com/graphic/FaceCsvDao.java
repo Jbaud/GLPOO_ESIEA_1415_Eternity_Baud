@@ -63,7 +63,7 @@ public class FaceCsvDao
 		}
 
 		//a mettre en log  
-		System.out.println("Fin de la lecture");
+		System.out.println("Fin de la lecture - face");
 
 		return facesHmap;
  	}

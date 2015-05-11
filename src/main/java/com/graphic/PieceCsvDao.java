@@ -19,7 +19,6 @@ public class PieceCsvDao
 	public PieceCsvDao(Map<Integer,Face> facesHmap)
 	{
 		ligne = "";
-		faces = new ArrayList<Face>();
 		this.facesHmap = facesHmap;
 		piecesHmap = new HashMap<Integer,Piece>();
 	}
@@ -44,6 +43,7 @@ public class PieceCsvDao
 				{
 					//on met la piece creee dans la hmap 'pieces'
 					//CONSTRUCTEUR PIECE [pour rappel] : Piece (int id, List<Face> faces)
+					faces = new ArrayList<Face>();
 					String[] contenu = ligne.split(separateur);
 					faces.add(facesHmap.get(Integer.parseInt(contenu[1],10))); //face_1
 					faces.add(facesHmap.get(Integer.parseInt(contenu[2],10))); //face_2
@@ -70,7 +70,7 @@ public class PieceCsvDao
 		}
 
 		//a mettre en log  
-		System.out.println("Fin de la lecture");
+		System.out.println("Fin de la lecture - piece");
 		
 		return piecesHmap;
 	}

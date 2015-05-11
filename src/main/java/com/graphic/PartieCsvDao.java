@@ -71,7 +71,7 @@ public class PartieCsvDao
 		}
 
 		//a mettre en log  
-		System.out.println("Fin de la lecture");
+		System.out.println("Fin de la lecture - partie");
 	  
 		return partie;
 	}

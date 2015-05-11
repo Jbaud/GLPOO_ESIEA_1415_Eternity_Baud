@@ -12,7 +12,7 @@ public class Face
 	{
 		this.type = type;
 		this.nom = nom;
-		this.url = "/faces/"+nom+".png";
+		this.url = "faces/"+nom+".png";
 		this.id = id;		
  	}
 
