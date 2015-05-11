@@ -83,7 +83,7 @@ public class SuperpoRotateIcon extends ImageIcon
 					g2d.rotate(Math.toRadians(270));
 				}
 				//affichage
-				couche.paintIcon(c,g2d,x,y+1);
+				couche.paintIcon(c,g2d,x,y);
 			}
 			else
 			{

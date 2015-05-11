@@ -16,58 +16,39 @@ import java.awt.Cursor; //pour le choix du curseur
 public class Gui extends JFrame
 {
 	//Creation du JFrame avec le focus
-	private JFrame frame = this;
+	private JFrame frame;
+	private Cursor curseurFleche;
 
 	//Creation table
-	private JTable table = null;
-	private ModeleTable modele = null;
+	private JButton[][] plateau;
+	private int taille;
 
-	//Creation panel pour les boutons et le temps
-	JPanel panelOutil = new JPanel();
-
-	//Creation panel pour le puzzl
-	JPanel panelPuzzle = new JPanel();
-
-	//Curseur
-	Cursor curseurFleche = new Cursor(Cursor.DEFAULT_CURSOR);
+	//Creation des panels 
+	private JPanel panelOutil;
+	private JPanel panelPuzzle;
 
 	//Creation barre de menu
-	JMenuBar barreMenu = new JMenuBar();
+	private JMenuBar barreMenu;
+	private JMenu fichier;
+	private JMenu aide;
+	private JMenuItem nouveau_;
+	private JMenuItem instructions_;
+	private JMenuItem about_;
 
-	//Creation catégories de barreMenu
-	JMenu fichier = new JMenu("Fichier");
-	JMenu aide = new JMenu("Aide");
+	//images pour le panel outil
+	private ImageIcon imageFlecheDroite;
+	private ImageIcon imageFlecheGauche;
 
-	//Creation des items dans Fichier
-	JMenuItem nouveau_ = new JMenuItem("Nouvelle partie");
+	//Creation des boutons et label du panel outil
+	private JLabel chronoLabel;
+	private JButton droiteLabel;
+	private JButton gaucheLabel;
+	private JButton menuLabel;
+	private JButton sauveLabel;
 
-	//Creation des items dans Aide
-	JMenuItem instructions_ = new JMenuItem("Instructions");
-	JMenuItem about_ = new JMenuItem("A propos");
-
-	//test
-	ImageIcon imageTruc = new ImageIcon("truc.png");
-	ImageIcon imageBidule = new ImageIcon("bidule.png");
-	ImageIcon imageMachin = new ImageIcon("machin.png");
-	ImageIcon imageBase = new ImageIcon("base-piece.png");
-	ImageIcon coucheCoeur = new ImageIcon("couleur-coeur.png");
-	SuperpoIcon imageChouette = new SuperpoIcon(imageBase);
-	RotateIcon imageTournee;
-
-	//images pour outils
-	ImageIcon imageFlecheDroite = new ImageIcon("images/flecheTourneDroite.png");
-	ImageIcon imageFlecheGauche = new ImageIcon("images/flecheTourneGauche.png");
-
-	//Creation des boutons et label d'outils
-	JLabel chronoLabel = new JLabel("00:00");
-	JButton tourneDroite = new JButton("",imageFlecheDroite);
-	JButton tourneGauche = new JButton("",imageFlecheGauche);
-	JButton menuLabel = new JButton("Menu");
-	JButton sauveLabel = new JButton("Sauvegarder");
-
-	List<String> faces = new ArrayList<String>();
-	Piece piece;
-	SuperpoRotateIcon imageComposeeTournee;
+	private JButton testCerveau;
+	private SuperpoRotateIcon imageComposeeTournee;
+	private SuperpoRotateIcon[][] partie;
 
 	public Gui()
 	{
@@ -75,137 +56,84 @@ public class Gui extends JFrame
 		super();
 		System.out.println("Graphic User Interface is being set");
 
-		//Set the window properties
-		this.setTitle("test pour JTable");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(900,655);
-		this.setLocationRelativeTo(null);
-		this.setResizable(false);
-
-		//Curseur fleche
-		setCursor(curseurFleche);
 
 
-		//////////////////////////////////////////////////////
-		//													//
-		//					BARRE DE MENU					//
-		//													//
-		//////////////////////////////////////////////////////
-
-		//Construct the hierarchy of the MenuBar
-		fichier.add(nouveau_);
-
-		aide.add(instructions_);
-		aide.add(about_);
-
-		//Add the MenuBar to the window
-		barreMenu.add(fichier);
-		barreMenu.add(aide);
-
-		//Activate the MenuBar
-		setJMenuBar(barreMenu);
-
-		//////////////////////////////////////////////////////
-		//													//
-		//						JTABLE						//
-		//													//
-		//////////////////////////////////////////////////////
-		
-
+		//----A ENLEVER PLUS TARD ----//
+		List<String> faces = new ArrayList<String>();
+		Piece piece;
 		faces.add("faces/couleur-bandes.png");
 		faces.add("faces/couleur-etoile.png");
 		faces.add("faces/couleur-shuriken.png");
 		faces.add("faces/couleur-zigzag.png");
 		piece = new Piece(faces);
 		imageComposeeTournee = new SuperpoRotateIcon(piece,Orientation.OUEST);
+		taille = 4;
+		partie = new SuperpoRotateIcon[taille][taille];
+    	for (int lin=0; lin<taille; lin++)
+    	{
+    		for (int col=0; col<taille; col++)
+    		{
+    			partie[lin][col] = imageComposeeTournee;
+    		}
+    	}
 
-		imageChouette.ajoutCouche(coucheCoeur);
-		imageTournee = new RotateIcon(imageTruc,Orientation.EST);
-
-		//Tableau de données
-		Object[][] donnees =
-		{
-			{imageChouette,Color.red,imageTruc},
-			{imageTournee,Color.blue,imageBidule},
-			{imageComposeeTournee,Color.yellow,imageTruc}
-		};
-
-		//Tableau de titres
-		String titre[] = {"Pieces", "Couleur", "Image"};
-
-		modele = new ModeleTable(donnees,titre);
-		this.table = new JTable(modele);
-		System.out.println("Nb colonnes : "+modele.getColumnCount());
-		System.out.println("Nb lignes : "+modele.getRowCount());
-		table.setDefaultRenderer(ImageIcon.class, new BorderRenderer(table.getDefaultRenderer(ImageIcon.class)));
-
-		//Setting des dimensions des cases
-		TableColumnModel columnModel = this.table.getColumnModel();
-		this.table.setRowHeight(150);
-		columnModel.getColumn(0).setPreferredWidth(150);
-		columnModel.getColumn(1).setPreferredWidth(150);
-		columnModel.getColumn(2).setPreferredWidth(150);
-		//columnModel.getColumn(3).setPreferredWidth(150);
-
-		//Setting des dimensions des panel
-		panelPuzzle.setSize(new Dimension(450,450));
-		panelPuzzle.setLocation(5,0);
-		panelOutil.setPreferredSize(new Dimension(350,450));
-		panelOutil.setLocation(610,0);
-		panelOutil.setLayout(null);
-
-		//ajout des composants dans les panel
-		panelPuzzle.add(table);
-		panelOutil.add(chronoLabel);
-		panelOutil.add(menuLabel);
-		panelOutil.add(sauveLabel);
-		panelOutil.add(tourneDroite);
-		panelOutil.add(tourneGauche);
-
-		//Positions des composants du panel outil
-		chronoLabel.setLocation(675,50);
-		tourneDroite.setLocation(655,150);
-		tourneGauche.setLocation(760,150);
-		menuLabel.setLocation(660,400);
-		sauveLabel.setLocation(660,475);
-
-		//Taille des composants dans le panel outil
-		chronoLabel.setSize(200,50);
-		chronoLabel.setFont(chronoLabel.getFont().deriveFont(50.0f));
-		tourneDroite.setSize(100,150);
-		tourneGauche.setSize(100,150);
-		menuLabel.setSize(200,50);
-		sauveLabel.setSize(200,50);
-
-		//retouche esthétique des boutons
-		tourneDroite.setContentAreaFilled(false);
-		tourneDroite.setBorderPainted(false);
-		tourneGauche.setContentAreaFilled(false);
-		tourneGauche.setBorderPainted(false);
+		//initialisations diverses
+		initFenetre();
+		initObjects();
+		initBarreMenu();
+		initPanel();
+		initPlateau();
 
 		//ajout des panel à la frame
 		this.add(panelPuzzle);
 		this.add(panelOutil);
 
+		//autorisation de l'affichage
+		this.setVisible(true);
+    }
 
-		//////////////////////////////////////////////////////
-		//													//
-		//					MENU LISTENERS					//
-		//													//
-		//////////////////////////////////////////////////////
+    private void initPlateau()
+    {
+    	plateau = new JButton[taille][taille];
+    	for (int lin=0; lin<taille; lin++)
+    	{
+    		for (int col=0; col<taille; col++)
+    		{
+    			plateau[lin][col] = new JButton("",partie[lin][col]);
+				plateau[lin][col].setBackground(Color.BLACK);
+    			plateau[lin][col].setBounds(5+5*lin+150*lin, 5+5*col+150*col, 150, 150); //marge intercell 5, taille cell 150
+    			panelPuzzle.add(plateau[lin][col]);
+    		}
+    	}
+    }
 
-		//Fichier>Nouvelle Partie
-		nouveau_.addActionListener(new ActionListener()
+    private void initBarreMenu()
+    {
+    	//Barre de menu
+		barreMenu = new JMenuBar();
+		fichier = new JMenu("Fichier");
+		aide = new JMenu("Aide");
+		nouveau_ = new JMenuItem("Nouvelle partie");
+		instructions_ = new JMenuItem("Instructions");
+		about_ = new JMenuItem("A propos");
+
+		//Hierarchie de la Barre de menu
+		fichier.add(nouveau_);
+		aide.add(instructions_);
+		aide.add(about_);
+		barreMenu.add(fichier);
+		barreMenu.add(aide);
+		setJMenuBar(barreMenu);
+
+		//Listeners
+		nouveau_.addActionListener(new ActionListener()  //Fichier>Nouvelle Partie
 		{
 			public void actionPerformed(ActionEvent event)
 			{
 				//partie.nouvellePartie();
 			}
 		});		
-
-
-		//Aide>Instructions
-		instructions_.addActionListener(new ActionListener()
+		instructions_.addActionListener(new ActionListener() //Aide>Instructions
 		{
 			public void actionPerformed(ActionEvent event)
 			{
@@ -216,9 +144,7 @@ public class Gui extends JFrame
 					JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-
-		//Aide>A propos
-		about_.addActionListener(new ActionListener()
+		about_.addActionListener(new ActionListener()//Aide>A propos
 		{
 			public void actionPerformed(ActionEvent event)
 			{
@@ -230,8 +156,79 @@ public class Gui extends JFrame
 					JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
-
     }
 
+    private void initObjects()
+    {
+		//images pour le panel outil
+		imageFlecheDroite = new ImageIcon("images/flecheTourneDroite.png");
+		imageFlecheGauche = new ImageIcon("images/flecheTourneGauche.png");
 
+		//boutons et label du panel outil
+		chronoLabel = new JLabel("00:00");
+		droiteLabel = new JButton("",imageFlecheDroite);
+		gaucheLabel = new JButton("",imageFlecheGauche);
+		menuLabel = new JButton("Menu");
+		sauveLabel = new JButton("Sauvegarder");
+
+		//taille pour les tableaux
+		//taille = 4;
+		testCerveau = new JButton("",imageComposeeTournee);
+    }
+
+    private void initFenetre()
+    {
+    	frame = this;
+		curseurFleche = new Cursor(Cursor.DEFAULT_CURSOR);
+
+		//proprietes de la fenetre
+		this.setTitle("Eternity");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setSize(900,675);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
+
+		//Curseur fleche
+		setCursor(curseurFleche);
+    }
+
+    private void initPanel()
+    {
+    	plateau = null;
+		panelOutil = new JPanel();
+		panelPuzzle = new JPanel();
+
+		//Setting des dimensions des panel
+		panelPuzzle.setSize(new Dimension(620,620));
+		panelPuzzle.setLocation(0,0);
+		panelPuzzle.setLayout(null);
+		panelOutil.setPreferredSize(new Dimension(350,450));
+		panelOutil.setLocation(610,0);
+		panelOutil.setLayout(null);
+
+		//ajout des composants dans les panel
+		panelOutil.add(chronoLabel);
+		panelOutil.add(menuLabel);
+		panelOutil.add(sauveLabel);
+		panelOutil.add(droiteLabel);
+		panelOutil.add(gaucheLabel);
+
+		//panelOutil.add(testCerveau);
+
+		//Positions et taille des composants du panel outil
+		chronoLabel.setBounds(675,50,200,50);
+		droiteLabel.setBounds(655,150,100,150);
+		gaucheLabel.setBounds(760,150,100,150);
+		menuLabel.setBounds(660,400,200,50);
+		sauveLabel.setBounds(660,475,200,50);
+
+		testCerveau.setBounds(500,450,150,150);
+
+		//retouche esthétique des boutons
+		chronoLabel.setFont(chronoLabel.getFont().deriveFont(50.0f));
+		droiteLabel.setContentAreaFilled(false);
+		droiteLabel.setBorderPainted(false);
+		gaucheLabel.setContentAreaFilled(false);
+		gaucheLabel.setBorderPainted(false);
+    }
 }
