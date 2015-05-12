@@ -10,12 +10,14 @@ public class SuperpoRotateIcon extends ImageIcon
 	private List<ImageIcon> couches;
 	private List<Face> faces;
 	private Orientation orientation;
+	private Piece piece;
 
 	//On va construire une SuperpoRotateIcon à partir d'une case (de partie[][]) passée en param
 
 	//Constructeur nord par défaut
 	public SuperpoRotateIcon(Piece piece)
 	{
+		this.piece = piece;
 		this.faces = piece.getFaces();
 		this.couches = new ArrayList<ImageIcon>();
 		//boucle for qui transforme liste Face en liste ImageIcon
@@ -29,6 +31,7 @@ public class SuperpoRotateIcon extends ImageIcon
 	//Constructeur ave orientation
 	public SuperpoRotateIcon(Piece piece, Orientation orientation)
 	{
+		this.piece = piece;
 		this.faces = piece.getFaces();
 		this.couches = new ArrayList<ImageIcon>();
 		//boucle for qui transforme liste Face en liste ImageIcon
@@ -36,6 +39,33 @@ public class SuperpoRotateIcon extends ImageIcon
 		{
 			couches.add(new ImageIcon(face.getUrl()));
 		}
+		this.orientation = orientation;
+	}
+
+	public Piece getPiece()
+	{
+		return piece;
+	}
+
+	public Orientation getOrientation()
+	{
+		return orientation;
+	}
+
+	public void setPiece(Piece piece)
+	{
+		this.piece = piece;
+		this.faces = piece.getFaces();
+		this.couches = new ArrayList<ImageIcon>();
+		//boucle for qui transforme liste Face en liste ImageIcon
+		for (Face face : faces)
+		{
+			couches.add(new ImageIcon(face.getUrl()));
+		}
+	}
+
+	public void setOrientation(Orientation orientation)
+	{
 		this.orientation = orientation;
 	}
 

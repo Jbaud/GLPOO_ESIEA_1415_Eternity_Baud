@@ -13,7 +13,7 @@ import java.awt.GridLayout;
 import java.awt.FileDialog;
 import java.awt.Cursor; //pour le choix du curseur
 
-public class Gui extends JFrame
+public class Gui extends JFrame implements ActionListener,MouseListener
 {
 	//Creation du JFrame avec le focus
 	private JFrame frame;
@@ -21,6 +21,7 @@ public class Gui extends JFrame
 
 	//Creation table
 	private JButton[][] plateau;
+	private SuperpoRotateIcon[][] images;
 	private int taille;
 
 	//Creation des panels 
@@ -59,6 +60,13 @@ public class Gui extends JFrame
 	private JButton testCerveau;
 	private SuperpoRotateIcon imageComposeeTournee;
 
+	//Variables evenementielles
+	private Boolean isPieceSelectionnee;
+	private int xSelect;
+	private int ySelect;
+	private Piece tempPiece;
+	private Orientation tempOrientation;
+
 	public Gui()
 	{
 		//appel au constructeur de la classe mère
@@ -72,6 +80,13 @@ public class Gui extends JFrame
 		initPanel();
 		initPartie();
 		initPlateau();
+
+		//initialisation des var d'event
+		isPieceSelectionnee = false;
+		xSelect = 0;
+		ySelect = 0;
+		tempPiece = null;
+		tempOrientation = null;
 		
 		//ajout des panel à la frame
 		this.add(panelPuzzle);
@@ -98,13 +113,17 @@ public class Gui extends JFrame
 	private void initPlateau()
 	{
 		plateau = new JButton[taille][taille];
+		images = new SuperpoRotateIcon[taille][taille];
 		for (int lin=0; lin<taille; lin++)
 		{
 			for (int col=0; col<taille; col++)
 			{
-				plateau[lin][col] = new JButton("",new SuperpoRotateIcon(partie[lin][col].piece, partie[lin][col].orientation));
+				images[lin][col] = new SuperpoRotateIcon(partie[lin][col].piece, partie[lin][col].orientation);
+				plateau[lin][col] = new JButton(images[lin][col]);
 				plateau[lin][col].setBackground(Color.BLACK);
-				plateau[lin][col].setBounds(5+5*lin+150*lin, 5+5*col+150*col, 150, 150); //marge intercell 5, taille cell 150
+				plateau[lin][col].setBounds(5+5*col+150*col, 5+5*lin+150*lin, 150, 150); //marge intercell 5, taille cell 150
+				plateau[lin][col].addMouseListener(this);
+				plateau[lin][col].addActionListener(this);
 				panelPuzzle.add(plateau[lin][col]);
 			}
 		}
@@ -174,10 +193,14 @@ public class Gui extends JFrame
 		menuLabel = new JButton("Menu");
 		sauveLabel = new JButton("Sauvegarder");
 
+		//ajout de l'actionListener
+		droiteLabel.addMouseListener(this);
+		gaucheLabel.addMouseListener(this);
+		menuLabel.addMouseListener(this);
+		sauveLabel.addMouseListener(this);
+
 		//taille pour les tableaux
 		taille = 4;
-
-		testCerveau = new JButton("",imageComposeeTournee);
 	}
 
 	private void initFenetre()
@@ -217,8 +240,6 @@ public class Gui extends JFrame
 		panelOutil.add(droiteLabel);
 		panelOutil.add(gaucheLabel);
 
-		//panelOutil.add(testCerveau);
-
 		//Positions et taille des composants du panel outil
 		chronoLabel.setBounds(675,50,200,50);
 		droiteLabel.setBounds(655,150,100,150);
@@ -226,13 +247,112 @@ public class Gui extends JFrame
 		menuLabel.setBounds(660,400,200,50);
 		sauveLabel.setBounds(660,475,200,50);
 
-		testCerveau.setBounds(500,450,150,150);
-
 		//retouche esthétique des boutons
 		chronoLabel.setFont(chronoLabel.getFont().deriveFont(50.0f));
 		droiteLabel.setContentAreaFilled(false);
 		droiteLabel.setBorderPainted(false);
 		gaucheLabel.setContentAreaFilled(false);
 		gaucheLabel.setBorderPainted(false);
+	}
+
+	public void actionPerformed(ActionEvent event)
+	{
+		//click sur une case
+		for(int i=0; i<taille; i++)
+		{
+			for(int j=0; j<taille; j++)
+			{
+				if (event.getSource() == plateau[i][j])
+				{
+					if (isPieceSelectionnee)
+					{
+						//déselection
+						System.out.println("Dé-selection de : "+xSelect+","+ySelect);
+						if (i==xSelect && j==ySelect)
+							isPieceSelectionnee = false;
+						else
+						{
+							System.out.println("echange");
+
+							images[xSelect][ySelect].setPiece(images[i][j].getPiece());
+							images[xSelect][ySelect].setOrientation(images[i][j].getOrientation());
+
+							images[i][j].setPiece(tempPiece);
+							images[i][j].setOrientation(tempOrientation);
+
+							isPieceSelectionnee = false;
+							repaint();
+						}
+					}
+					else
+					{
+						System.out.println("Selection de : "+i+","+j);
+						isPieceSelectionnee = true;
+						xSelect = i;
+						ySelect = j;
+						tempPiece = images[xSelect][ySelect].getPiece();
+						tempOrientation = images[xSelect][ySelect].getOrientation();
+					}
+				}
+			}
+		}
+	}
+
+	public void mouseClicked(MouseEvent event)
+	{
+		//LEFT button
+		if (event.getButton() == 1)
+		{
+			//click sur la fleche pour tourner à droite
+			if (event.getSource() == droiteLabel)
+			{
+				if(isPieceSelectionnee)
+				{
+					images[xSelect][ySelect].rotateDroite();
+					partie[xSelect][ySelect].orientation.getDroite();
+					repaint();
+				}
+			}
+			//click sur la fleche pour tourner à gauche
+			else if (event.getSource() == gaucheLabel)
+			{
+				if(isPieceSelectionnee)
+				{
+					images[xSelect][ySelect].rotateGauche();
+					partie[xSelect][ySelect].orientation.getGauche();
+					repaint();
+				}
+			}
+			//click sur le bouton de menu
+			else if (event.getSource() == menuLabel)
+			{
+				//
+			}
+			//click sur le bouton de sauvegarde
+			else if (event.getSource() == sauveLabel)
+			{
+				//
+			}
+		}
+	}
+
+	public void mouseExited(MouseEvent event)
+	{
+		return;
+	}
+
+	public void mouseEntered(MouseEvent event)
+	{
+		return;
+	}
+
+	public void mouseReleased(MouseEvent event)
+	{
+		return;
+	}
+
+	public void mousePressed(MouseEvent event)
+	{
+		return;
 	}
 }
