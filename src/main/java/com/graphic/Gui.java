@@ -66,6 +66,7 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 	private int ySelect;
 	private Piece tempPiece;
 	private Orientation tempOrientation;
+	private Verification verif;
 
 	public Gui()
 	{
@@ -87,6 +88,7 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 		ySelect = 0;
 		tempPiece = null;
 		tempOrientation = null;
+		verif = new Verification(partie);
 		
 		//ajout des panel à la frame
 		this.add(panelPuzzle);
@@ -268,30 +270,48 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 					{
 						//déselection
 						System.out.println("Dé-selection de : "+xSelect+","+ySelect);
-						if (i==xSelect && j==ySelect)
-							isPieceSelectionnee = false;
-						else
+
+						isPieceSelectionnee = false;
+						images[xSelect][ySelect].enleveCadre();
+						
+						if (i!=xSelect || j!=ySelect)
 						{
 							System.out.println("echange");
 
+							partie[xSelect][ySelect].piece = partie[i][j].piece;
+							partie[xSelect][ySelect].orientation = partie[i][j].orientation;
+							partie[i][j].piece = tempPiece;
+							partie[i][j].orientation = tempOrientation;
+
 							images[xSelect][ySelect].setPiece(images[i][j].getPiece());
 							images[xSelect][ySelect].setOrientation(images[i][j].getOrientation());
-
 							images[i][j].setPiece(tempPiece);
 							images[i][j].setOrientation(tempOrientation);
-
-							isPieceSelectionnee = false;
-							repaint();
 						}
+
+						//verif si victoire
+						if(verif.checkVictoire() == true)
+							System.out.println("Victoire !");
+
+						repaint();
 					}
 					else
 					{
 						System.out.println("Selection de : "+i+","+j);
-						isPieceSelectionnee = true;
 						xSelect = i;
 						ySelect = j;
 						tempPiece = images[xSelect][ySelect].getPiece();
 						tempOrientation = images[xSelect][ySelect].getOrientation();
+
+						isPieceSelectionnee = true;
+						images[xSelect][ySelect].ajouteCadre();
+
+						//verif si victoire
+						if(verif.checkVictoire() == true)
+						System.out.println("Victoire !");
+
+						repaint();
+
 					}
 				}
 			}
@@ -308,9 +328,13 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 			{
 				if(isPieceSelectionnee)
 				{
+					partie[xSelect][ySelect].orientation = partie[xSelect][ySelect].orientation.getDroite();
 					images[xSelect][ySelect].rotateDroite();
-					partie[xSelect][ySelect].orientation.getDroite();
 					repaint();
+
+					//verif si victoire
+					if(verif.checkVictoire() == true)
+						System.out.println("Victoire !");
 				}
 			}
 			//click sur la fleche pour tourner à gauche
@@ -318,9 +342,13 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 			{
 				if(isPieceSelectionnee)
 				{
+					partie[xSelect][ySelect].orientation = partie[xSelect][ySelect].orientation.getGauche();
 					images[xSelect][ySelect].rotateGauche();
-					partie[xSelect][ySelect].orientation.getGauche();
 					repaint();
+
+					//verif si victoire
+					if(verif.checkVictoire() == true)
+						System.out.println("Victoire !");
 				}
 			}
 			//click sur le bouton de menu
