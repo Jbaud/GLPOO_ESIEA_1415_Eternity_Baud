@@ -116,6 +116,7 @@ public class MenuPartie extends JFrame implements ActionListener{
 		setTitle("Menu Chargement");
 		setSize(350,350);
 		this.setLocationRelativeTo(null);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setResizable(false);
 		
 		

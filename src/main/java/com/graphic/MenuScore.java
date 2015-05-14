@@ -2,11 +2,13 @@ package main.java.com.graphic;
 import java.awt.BorderLayout;
 import java.awt.event.*;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class MenuScore extends JFrame implements ActionListener{
 	
@@ -36,6 +38,7 @@ public class MenuScore extends JFrame implements ActionListener{
 	    private JLabel label1;
 	    private JLabel label2;
 	    private JLabel label3;
+	    private JLabel labeltest;
 	    
 	    //creation des variables NOM
 	    private String nom1;
@@ -60,7 +63,7 @@ public class MenuScore extends JFrame implements ActionListener{
 			
 			nom1="Michel";
 			nom2="Bruno";
-			nom3="Bob";
+			nom3="BobLaTomate";
 			
 			stringMin1 = Integer.toString(min1);
 			stringSec1 = Integer.toString(sec1);
@@ -100,21 +103,26 @@ public class MenuScore extends JFrame implements ActionListener{
 		    }
 			 
 		    
-			label1 = new JLabel("<html>1	Pseudo:		"+nom1+" 	"+stringMin1+":"+stringSec1+"</html>");
-			label2 = new JLabel("<html>2 	Pseudo:		"+nom2+"	 "+stringMin2+":"+stringSec2+"</html>");
-			label3 = new JLabel("<html>3	Pseudo:		"+nom3+" 	"+stringMin3+":"+stringSec3+"</html>");
-		
-			label1.setBounds(75, 70, 200, 50);
-			label2.setBounds(75, 140, 200, 50);
-			label3.setBounds(75,210,200, 50);
-				  
+			label1 = new JLabel("<html><pre>1    "+nom1+"     "+stringMin1+":"+stringSec1+"</pre></html>");
+			label2 = new JLabel("<html><pre>2    "+nom2+"     "+stringMin2+":"+stringSec2+"</pre></html>");
+			label3 = new JLabel("<html><pre>3    "+nom3+"     "+stringMin3+":"+stringSec3+"</pre></html>");
+
+			label1.setBounds(70, 70, 200, 50);
+			label1.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+			label2.setBounds(70, 140, 200,50);
+			label2.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+			label3.setBounds(70,210,200, 50);
+			label3.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+			
 	    	this.add(label1);
 	    	this.add(label2);
 	    	this.add(label3);
-	      		
+
 			setTitle("Menu Score");
 			setSize(350,350);
 			this.setLocationRelativeTo(null);
+			setDefaultCloseOperation(EXIT_ON_CLOSE);
 			this.setResizable(false);
 				
 			
