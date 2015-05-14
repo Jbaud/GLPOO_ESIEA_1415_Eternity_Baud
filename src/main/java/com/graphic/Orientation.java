@@ -1,3 +1,5 @@
+package main.java.com.graphic;
+
 import java.util.Enumeration;
 
 public enum Orientation

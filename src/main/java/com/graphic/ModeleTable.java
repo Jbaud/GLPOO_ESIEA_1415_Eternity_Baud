@@ -1,3 +1,5 @@
+package main.java.com.graphic;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;

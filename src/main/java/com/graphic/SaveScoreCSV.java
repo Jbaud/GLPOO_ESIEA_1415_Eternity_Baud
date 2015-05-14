@@ -1,3 +1,5 @@
+package main.java.com.graphic;
+
 import java.io.FileWriter;
 import java.io.IOException;
 

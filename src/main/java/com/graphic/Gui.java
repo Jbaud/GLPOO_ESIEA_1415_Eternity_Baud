@@ -1,3 +1,4 @@
+package main.java.com.graphic;
 
 import java.awt.event.*;
 import java.awt.Graphics2D; //pour les events repaint
@@ -34,7 +35,9 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 	private JMenuBar barreMenu;
 	private JMenu fichier;
 	private JMenu aide;
-	private JMenuItem nouveau_;
+	private JMenuItem nouvellePartie_;
+	private JMenuItem menu_;
+	private JMenuItem sauvegarder_;
 	private JMenuItem instructions_;
 	private JMenuItem about_;
 
@@ -138,29 +141,48 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 	private void initBarreMenu()
 	{
 		//Barre de menu
-		barreMenu = new JMenuBar();
-		fichier = new JMenu("Fichier");
-		aide = new JMenu("Aide");
-		nouveau_ = new JMenuItem("Nouvelle partie");
-		instructions_ = new JMenuItem("Instructions");
-		about_ = new JMenuItem("A propos");
+			barreMenu = new JMenuBar();
+			fichier = new JMenu("Fichier");
+			aide = new JMenu("Aide");
+			nouvellePartie_ = new JMenuItem("Recommencer");
+			menu_ = new JMenuItem("Menu");
+			sauvegarder_ = new JMenuItem("Sauvegarder");
+			instructions_ = new JMenuItem("Instructions");
+			about_ = new JMenuItem("A propos");
 
-		//Hierarchie de la Barre de menu
-		fichier.add(nouveau_);
-		aide.add(instructions_);
-		aide.add(about_);
-		barreMenu.add(fichier);
-		barreMenu.add(aide);
-		setJMenuBar(barreMenu);
+			//Hierarchie de la Barre de menu
+			fichier.add(nouvellePartie_);
+			fichier.add(menu_);
+			fichier.add(sauvegarder_);
+			aide.add(instructions_);
+			aide.add(about_);
+			barreMenu.add(fichier);
+			barreMenu.add(aide);
+			setJMenuBar(barreMenu);
 
-		//Listeners
-		nouveau_.addActionListener(new ActionListener()  //Fichier>Nouvelle Partie
-		{
-			public void actionPerformed(ActionEvent event)
+			//Listeners
+			nouvellePartie_.addActionListener(new ActionListener()  //Fichier>Recommencer
 			{
-				//partie.nouvellePartie();
-			}
-		});		
+				public void actionPerformed(ActionEvent event)
+				{
+					//lancement nouvelle partie
+				}
+			});
+			menu_.addActionListener(new ActionListener()  //Fichier>Menu
+			{
+				public void actionPerformed(ActionEvent event)
+				{
+					//ouverture fenetre de menu
+				}
+			});
+			sauvegarder_.addActionListener(new ActionListener()  //Fichier>Sauvegarder
+			{
+				public void actionPerformed(ActionEvent event)
+				{
+					//sauvegarde
+					//pop up confirmant la sauvegarde
+				}
+			});			
 		instructions_.addActionListener(new ActionListener() //Aide>Instructions
 		{
 			public void actionPerformed(ActionEvent event)

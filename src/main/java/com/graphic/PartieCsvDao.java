@@ -1,3 +1,5 @@
+package main.java.com.graphic;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

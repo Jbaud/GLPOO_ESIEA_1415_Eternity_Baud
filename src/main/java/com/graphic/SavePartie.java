@@ -1,3 +1,5 @@
+package main.java.com.graphic;
+
 import java.awt.List;
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;

@@ -1,3 +1,5 @@
+package main.java.com.graphic;
+
 public abstract class AbstractCSV
 {
 	public static final String _separateur = " ";
