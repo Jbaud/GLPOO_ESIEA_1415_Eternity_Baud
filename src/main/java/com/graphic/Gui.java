@@ -37,6 +37,7 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 	private JMenu aide;
 	private JMenuItem nouvellePartie_;
 	private JMenuItem menu_;
+	private JMenuItem recommencer_;
 	private JMenuItem sauvegarder_;
 	private JMenuItem instructions_;
 	private JMenuItem about_;
@@ -50,6 +51,7 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 	private JButton droiteLabel;
 	private JButton gaucheLabel;
 	private JButton menuLabel;
+	private JButton reloadLabel;
 	private JButton sauveLabel;
 
 	//Elements de jeu
@@ -146,6 +148,7 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 			aide = new JMenu("Aide");
 			nouvellePartie_ = new JMenuItem("Recommencer");
 			menu_ = new JMenuItem("Menu");
+			recommencer_ = new JMenuItem("Recommencer");
 			sauvegarder_ = new JMenuItem("Sauvegarder");
 			instructions_ = new JMenuItem("Instructions");
 			about_ = new JMenuItem("A propos");
@@ -153,6 +156,7 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 			//Hierarchie de la Barre de menu
 			fichier.add(nouvellePartie_);
 			fichier.add(menu_);
+			fichier.add(recommencer_);
 			fichier.add(sauvegarder_);
 			aide.add(instructions_);
 			aide.add(about_);
@@ -219,12 +223,14 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 		droiteLabel = new JButton("",imageFlecheDroite);
 		gaucheLabel = new JButton("",imageFlecheGauche);
 		menuLabel = new JButton("Menu");
+		reloadLabel = new JButton("Recommencer");
 		sauveLabel = new JButton("Sauvegarder");
 
 		//ajout de l'actionListener
 		droiteLabel.addMouseListener(this);
 		gaucheLabel.addMouseListener(this);
 		menuLabel.addMouseListener(this);
+		reloadLabel.addMouseListener(this);
 		sauveLabel.addMouseListener(this);
 
 		//taille pour les tableaux
@@ -264,6 +270,7 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 		//ajout des composants dans les panel
 		panelOutil.add(chronoLabel);
 		panelOutil.add(menuLabel);
+		panelOutil.add(reloadLabel);
 		panelOutil.add(sauveLabel);
 		panelOutil.add(droiteLabel);
 		panelOutil.add(gaucheLabel);
@@ -273,7 +280,8 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 		droiteLabel.setBounds(655,150,100,150);
 		gaucheLabel.setBounds(760,150,100,150);
 		menuLabel.setBounds(660,400,200,50);
-		sauveLabel.setBounds(660,475,200,50);
+		reloadLabel.setBounds(660,475,200,50);
+		sauveLabel.setBounds(660,550,200,50);
 
 		//retouche esthétique des boutons
 		chronoLabel.setFont(chronoLabel.getFont().deriveFont(50.0f));
@@ -383,6 +391,11 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 			else if (event.getSource() == menuLabel)
 			{
 				//
+			}
+			//click sur le bouton de menu
+			else if (event.getSource() == reloadLabel)
+			{
+				valeur=-1;
 			}
 			//click sur le bouton de sauvegarde
 			else if (event.getSource() == sauveLabel)
