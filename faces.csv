@@ -1,0 +1,10 @@
+#STRUCTURE CSV : (int)id_face,(string)nom_de_la_face,(char)type
+0,noir,B
+1,bandes_violet_jaune,F
+2,etoile_bleu_jaune,F
+3,shuriken_vert_bleu,F
+4,zigzag_rouge_blanc,F
+5,coeur_blanc_rose,F
+6,rayures_orange_vert,F
+7,fleche_rouge_orange,F
+8,triangle_rose_violet,F

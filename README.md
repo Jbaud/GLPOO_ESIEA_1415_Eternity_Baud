@@ -1,5 +1,5 @@
 # Projet de Génie Logiciel
-
+![alt text](https://github.com/Jbaud/GLPOO/blob/master/logo.jpg "Logo Title Text 1")
 Ce projet vise à creer un clone du jeu Eternity en utilisant des méthodes agiles:
 
 Guide d'installation:
