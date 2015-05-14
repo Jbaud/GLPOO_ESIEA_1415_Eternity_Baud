@@ -1,5 +1,9 @@
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import com.opencsv.CSVWriter;
 
@@ -8,36 +12,12 @@ public class SaveScoreCSV {
 
 
 	public SaveScoreCSV(){
-
-
 	}
 
-	public void  saveScore(String[] score){
-
-		String csv = "score.csv";
-		CSVWriter writer = null;
-		try {
-			// ajout de true dans le constructeur FileWriter afin qu il ajoute a la fin du fichier existant
-			// sans quotes et avec un , en separation 
-
-			writer = new CSVWriter(new FileWriter(csv,true), ',', 
-					CSVWriter.NO_QUOTE_CHARACTER, 
-					CSVWriter.NO_ESCAPE_CHARACTER, 
-					System.getProperty("line.separator"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		writer.writeNext(score);
-
-
-		try {
-			writer.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		System.out.println("Fin de l ecriture du fichier des scores");
+	public void save(ArrayList<Score> liste) throws FileNotFoundException {
+		PrintWriter pw = new PrintWriter(new FileOutputStream("score.csv"));
+		for (Score s : liste)
+			pw.println(s.toString());
+		pw.close();
 	}
 }

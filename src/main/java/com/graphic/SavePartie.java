@@ -1,5 +1,6 @@
 import java.awt.List;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,7 +21,27 @@ public class SavePartie{
 	
 	public void savePartie(Partie[][] partie)
 	{
-		  String csv = "data.csv";
+		//////////////////////////////////////
+		File oldfile =new File("load3,csv");
+		File newfile =new File("load2.csv");
+ 
+		if(oldfile.renameTo(newfile)){
+			System.out.println("Rename succesful");
+		}else{
+			System.out.println("Rename failed");
+		}
+		File oldfile2 =new File("load2,csv");
+		File newfile2 =new File("load1.csv");
+ 
+		if(oldfile2.renameTo(newfile2)){
+			System.out.println("Rename succesful");
+		}else{
+			System.out.println("Rename failed");
+		}
+		
+		//////////////////////////////////////
+		
+		  String csv = "load1.csv";
 	      CSVWriter writer = null;
 		try {
 		writer = new CSVWriter(new FileWriter(csv), ',', 

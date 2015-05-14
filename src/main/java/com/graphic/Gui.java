@@ -69,8 +69,13 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 	private Piece tempPiece;
 	private Orientation tempOrientation;
 	private Verification verif;
+
+
 	private SavePartie save = new SavePartie();
-	
+	private ReadScore score = new ReadScore();
+	private CompareScore comparateur;
+	private SaveScoreCSV saveScore;
+
 	public Gui()
 	{
 		//appel au constructeur de la classe mère
@@ -93,7 +98,7 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 		tempOrientation = null;
 		verif = new Verification(partie);
 		chrono = new Timer(1000, marche);		
-   		chrono.start();
+		chrono.start();
 		//ajout des panel à la frame
 		this.add(panelPuzzle);
 		this.add(panelOutil);
@@ -114,6 +119,8 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 		piecesHmap = piecesDao.parser(fichierPieces,",");
 		partieDao = new PartieCsvDao(piecesHmap);
 		partie = partieDao.parser(fichierPartie,",");
+		// ouverture 
+		comparateur = new CompareScore(score.read());
 	}
 
 	private void initPlateau()
@@ -166,10 +173,10 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 			public void actionPerformed(ActionEvent event)
 			{
 				JOptionPane.showMessageDialog (null,
-					"Ici il faut mettre des instructions\n"
-					+"Bla Bla Bla",
-					"Instructions",
-					JOptionPane.INFORMATION_MESSAGE);
+						"Ici il faut mettre des instructions\n"
+								+"Bla Bla Bla",
+								"Instructions",
+								JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		about_.addActionListener(new ActionListener()//Aide>A propos
@@ -177,11 +184,11 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 			public void actionPerformed(ActionEvent event)
 			{
 				JOptionPane.showMessageDialog (null,
-					"Ce logiciel de jeu a été développé par des étudiants de l'ESIEA en 2015"
-					+"\nBala, Baud, Delisle, Fourcade, Martineau, Payne"
-					+"\nsous l'égide de Thierry Leriche-Dessirier",
-					"A propos",
-					JOptionPane.INFORMATION_MESSAGE);
+						"Ce logiciel de jeu a été développé par des étudiants de l'ESIEA en 2015"
+								+"\nBala, Baud, Delisle, Fourcade, Martineau, Payne"
+								+"\nsous l'égide de Thierry Leriche-Dessirier",
+								"A propos",
+								JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 	}
@@ -277,12 +284,12 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 
 						isPieceSelectionnee = false;
 						images[xSelect][ySelect].enleveCadre();
-						
+
 						if (i!=xSelect || j!=ySelect)
 						{
 							System.out.println("echange");
-							
-						
+							comparateur.integreScore("Lola", 0, 23);
+
 
 							partie[xSelect][ySelect].piece = partie[i][j].piece;
 							partie[xSelect][ySelect].orientation = partie[i][j].orientation;
@@ -314,7 +321,7 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 
 						//verif si victoire
 						if(verif.checkVictoire() == true)
-						System.out.println("Victoire !");
+							System.out.println("Victoire !");
 
 						repaint();
 
@@ -373,33 +380,33 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 	}
 
 	Timer chrono;
-    int valeur = 0;
-    ActionListener marche = new ActionListener()  {
-		  public void actionPerformed(ActionEvent e1)  {
+	int valeur = 0;
+	ActionListener marche = new ActionListener()  {
+		public void actionPerformed(ActionEvent e1)  {
 
-			  valeur++;
-			
-			  int minute = valeur/60;
-	          int seconde = valeur - (minute*60);
-	
-	          String stringMin = Integer.toString(minute);
-	          
-	          if (minute < 10)
-	          {
-	        	  stringMin = "0" + Integer.toString(minute);
-	          }
-	          
-	          String stringSec = Integer.toString(seconde);
-	          
-	          if (seconde < 10)
-	          {
-	        	  stringSec = "0" + Integer.toString(seconde);
-	          }
+			valeur++;
 
-			  chronoLabel.setText(stringMin+":"+stringSec);		 
-		 }
-     };	
-     
+			int minute = valeur/60;
+			int seconde = valeur - (minute*60);
+
+			String stringMin = Integer.toString(minute);
+
+			if (minute < 10)
+			{
+				stringMin = "0" + Integer.toString(minute);
+			}
+
+			String stringSec = Integer.toString(seconde);
+
+			if (seconde < 10)
+			{
+				stringSec = "0" + Integer.toString(seconde);
+			}
+
+			chronoLabel.setText(stringMin+":"+stringSec);		 
+		}
+	};	
+
 	public void mouseExited(MouseEvent event)
 	{
 		return;
