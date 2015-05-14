@@ -418,7 +418,7 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 	          int seconde = valeur - (minute*60);
 	
 	          String stringMin = Integer.toString(minute);
-	          
+		          
 	          if (minute < 10)
 	          {
 	        	  stringMin = "0" + Integer.toString(minute);
