@@ -404,6 +404,7 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 							listeScore = scoreDao.read();
 							int minScore = minute;
 							int secScore = seconde;
+							JOptionPane.showMessageDialog(null, "Bravo ! Victoire en "+minScore+"min "+secScore+"sec.");
 							if (gestionScore.isHighScore(listeScore,minScore,secScore))
 							{
 								String nom = (String)JOptionPane.showInputDialog(null, "<html>Vous rentrez dans le top 3 des meilleurs scores !<br>Indiquez votre nom :</html>",
@@ -432,6 +433,7 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 							listeScore = scoreDao.read();
 							int minScore = minute;
 							int secScore = seconde;
+							JOptionPane.showMessageDialog(null, "Bravo ! Victoire en "+minScore+"min "+secScore+"sec.");
 							if (gestionScore.isHighScore(listeScore,minScore,secScore))
 							{
 								String nom = (String)JOptionPane.showInputDialog(null, "<html>Vous rentrez dans le top 3 des meilleurs scores !<br>Indiquez votre nom :</html>",
@@ -469,8 +471,10 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 						listeScore = scoreDao.read();
 						int minScore = minute;
 						int secScore = seconde;
+						JOptionPane.showMessageDialog(null, "Bravo ! Victoire en "+minScore+"min "+secScore+"sec.");
 						if (gestionScore.isHighScore(listeScore,minScore,secScore))
 						{
+							System.out.println("aaa");
 							//Object[] options = {"I'm the best !","Non merci je suis modeste"};
 							String nom = (String)JOptionPane.showInputDialog(null, "<html>Vous rentrez dans le top 3 des meilleurs scores !<br>Indiquez votre nom :</html>",
 								"Highscore - Félicitations !", JOptionPane.QUESTION_MESSAGE,new ImageIcon("images/victoire.png"),null, "Thierry");
@@ -495,6 +499,7 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 						listeScore = scoreDao.read();
 						int minScore = minute;
 						int secScore = seconde;
+						JOptionPane.showMessageDialog(null, "Bravo ! Victoire en "+minScore+"min "+secScore+"sec.");
 						if (gestionScore.isHighScore(listeScore,minScore,secScore))
 						{
 							//Object[] options = {"I'm the best !","Non merci je suis modeste"};

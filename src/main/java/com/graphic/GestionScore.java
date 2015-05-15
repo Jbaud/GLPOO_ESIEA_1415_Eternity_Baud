@@ -18,34 +18,37 @@ public class GestionScore {
 	public void integreScore(List<Score> scores,String nom,int minutes, int secondes)
 	{
 		SaveScore saveScore = new SaveScore();
+		List<Score> tempListe = new ArrayList<Score>();
 
 		// score = 100*minutes+secondes
 		Temps temps = new Temps(minutes,secondes);
+		int newScore = temps.getMinutes() * 100 + temps.getSecondes();
 
 		// on cree et ajoute le nouveau score
-		Score nouveau_score = new Score(nom,temps); 
-		scores.add(nouveau_score);
+		Score score = new Score(nom,temps);
 
-		// maintenant on va trier le tableau et garder les trois premiers elements
-		// colletion trie la liste avec la clé demandée
-		Collections.sort(scores, Score.ScoreTempsComparator);
-		
-		// si plus de 3 elements on garde 3 premiers uniquement
-		// on garde 3 premiers et on vire le reste
-		if (scores.size()>3) {
-			Score premier =liste.get(0);
-			Score deuxieme =liste.get(1);
-			Score troisieme =liste.get(2);
-
-			scores.clear();
-			scores.add(premier);
-			scores.add(deuxieme);
-			scores.add(troisieme);
+		if (newScore < scores.get(0).getScore())
+		{
+			tempListe.add(score);
+			tempListe.add(scores.get(0));
+			tempListe.add(scores.get(1));
+		}
+		else if (newScore < scores.get(1).getScore())
+		{
+			tempListe.add(scores.get(0));
+			tempListe.add(score);
+			tempListe.add(scores.get(1));
+		}
+		else
+		{
+			tempListe.add(scores.get(0));
+			tempListe.add(scores.get(1));
+			tempListe.add(score);
 		}
 		// la liste contient bien trois elements
 
 		// sauvegarde liste
-		this.liste= scores;
+		this.liste= tempListe;
 		
 		//Ecriture du nouveau fichier de score
 		try {

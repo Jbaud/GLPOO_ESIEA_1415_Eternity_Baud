@@ -1,4 +1,3 @@
-#STRUCTURE CSV : (int)id_piece, (int)coordX, (int)coordY, (String)ORIENTATION
 8,0,0,NORD
 11,0,1,EST
 9,0,2,SUD

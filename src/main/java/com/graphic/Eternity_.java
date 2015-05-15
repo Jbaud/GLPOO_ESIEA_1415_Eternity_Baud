@@ -116,6 +116,34 @@ public class Eternity_ extends JFrame implements ActionListener
 					scores = new HighScores();
 				}
 			}
+			else if (source == menu.quit)
+			{
+				int quitter = JOptionPane.showConfirmDialog(null, "Voulez-vous vraiment quitter ?", "Quitter...",JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE);
+				if (quitter == 0)
+				{
+					if (menu != null)
+					{
+						menu.dispose();
+					}
+					if (puzzle != null)
+					{
+						puzzle.dispose();
+					}
+					if (chargement != null)
+					{
+						chargement.dispose();
+					}
+					if (scores != null)
+					{
+						scores.dispose();
+					}
+					if (aide != null)
+					{
+						aide.dispose();
+					}
+					System.exit(0);
+				}
+			}
 		}
 
 		if (chargement != null)
