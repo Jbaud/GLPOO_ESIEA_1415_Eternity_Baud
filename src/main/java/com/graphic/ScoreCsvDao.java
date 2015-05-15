@@ -28,7 +28,7 @@ public class ScoreCsvDao
 		try {
 			while ((nextLine = reader.readNext()) != null) {
 				System.out.println(nextLine[0]);
-				liste_score.add(new Score(nextLine[0],Integer.parseInt(nextLine[1]))); 
+				liste_score.add(new Score(nextLine[0], new Temps(Integer.parseInt(nextLine[1]), Integer.parseInt(nextLine[2])) )); 
 			}
 		} catch (IOException e) {
 

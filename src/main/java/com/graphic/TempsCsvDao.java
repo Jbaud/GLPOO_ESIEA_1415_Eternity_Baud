@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-
+import java.util.List;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 
@@ -13,14 +13,14 @@ import com.opencsv.CSVWriter;
 public class TempsCsvDao
 {
 
-	private ArrayList<Temps> liste_temps;
+	private List<Temps> liste_temps;
 
 	public TempsCsvDao()
 	{
-		liste_temps = new ArrayList<Temps>();
+		this.liste_temps = new ArrayList<Temps>();
 	}
 		
-	public Temps readTemps(int valeur)
+	public List<Temps> readTemps()
 	{
 		CSVReader reader = null;
 		try {
@@ -29,26 +29,21 @@ public class TempsCsvDao
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	     String [] nextLine;
-	     try {
-			while ((nextLine = reader.readNext()) != null) {
-		
-			   liste_temps.add(new Temps(Integer.parseInt(nextLine[0]),Integer.parseInt(nextLine[0]))); 
-			 }
-		} catch (NumberFormatException | IOException e) {
-			// TODO Auto-generated catch block
+	    
+	    String [] nextLine;
+	    liste_temps.add(new Temps(0,0));
+	    try {
+			while ((nextLine = reader.readNext()) != null)
+			{
+				liste_temps.add(new Temps(Integer.parseInt(nextLine[0]),Integer.parseInt(nextLine[1]))); 
+			}
+		} catch (NumberFormatException | IOException e)
+		{
 			e.printStackTrace();
 		}
-	     this.liste_temps = liste_temps;
-	     
-	     if (valeur==0) {
-			return new Temps(0, 0);
-		}
-	     if (valeur !=0 && valeur <= 3 ) {
-				return liste_temps.get(valeur);
-			}
-	     // case fail
-		return null;
+	    
+		return liste_temps;
+	    
 	}
 
 	public void writeTemps(){
@@ -72,10 +67,6 @@ public class TempsCsvDao
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-
-	public ArrayList<Temps> getListe_temps() {
-		return liste_temps;
 	}
 
 	public void setListe_temps(ArrayList<Temps> liste_temps) {

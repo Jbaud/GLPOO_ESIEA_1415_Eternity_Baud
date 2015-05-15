@@ -17,26 +17,25 @@ public class Aide extends JFrame
 	public Aide()
 	{	
 		frame = this;
-		this.setTitle("Eternity-Aide");
-		setSize(654,750);
+		this.setTitle("Aide");
+		setSize(543,660);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setLayout(new BorderLayout());
-		setContentPane(new JLabel(new ImageIcon("src/fondMenu.png")));
+		setContentPane(new JLabel(new ImageIcon("images/fondMenu.png")));
 		setLayout(null);
 
-		selection = new JLabel(new ImageIcon("src/selection.png")); 
-		rotation = new JLabel(new ImageIcon("src/rotationDroite.png")); 
-		echange = new JLabel(new ImageIcon("src/echange.png")); 
-		match = new JLabel(new ImageIcon("src/match.png")); 
-		bords = new JLabel(new ImageIcon("src/bords.png")); 
+		selection = new JLabel(new ImageIcon("images/selection.png")); 
+		rotation = new JLabel(new ImageIcon("images/rotation.png")); 
+		echange = new JLabel(new ImageIcon("images/echange.png")); 
+		match = new JLabel(new ImageIcon("images/match.png")); 
+		bords = new JLabel(new ImageIcon("images/bords.png")); 
 		
-		selection.setBounds(50, 10, 554, 125);
-		rotation.setBounds(50, 155, 554, 125);
-		echange.setBounds(50, 300, 554, 125);
-		match.setBounds(50, 445, 554, 125);
-		bords.setBounds(50, 590, 554, 125);
+		selection.setBounds(50, 10, 443, 110);
+		rotation.setBounds(50, 140,443, 110);
+		echange.setBounds(50, 270, 443, 110);
+		match.setBounds(50, 400, 443, 110);
+		bords.setBounds(50, 530, 443, 110);
 
 		this.add(bords);
 		this.add(echange);

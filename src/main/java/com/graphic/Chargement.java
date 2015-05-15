@@ -37,8 +37,6 @@ public class Chargement extends JFrame
 
 	public Chargement()
 	{
-		System.out.println("Entree dans le constru");	
-		setLayout(new BorderLayout());
 		setContentPane(new JLabel(new ImageIcon("images/fondMenu.png")));
 		setLayout(null);
 		setTitle("Charger une partie");
@@ -49,9 +47,9 @@ public class Chargement extends JFrame
 	
 		//recup avec des csv
 		tempsDao = new TempsCsvDao();
-		temps1 = tempsDao.readTemps(1);
-		temps2 = tempsDao.readTemps(2);
-		temps3 = tempsDao.readTemps(3);
+		temps1 = tempsDao.readTemps().get(1);
+		temps2 = tempsDao.readTemps().get(2);
+		temps3 = tempsDao.readTemps().get(3);
 		min1=temps1.getMinutes();
 		sec1=temps1.getSecondes();
 		min2=temps2.getMinutes();
@@ -59,9 +57,9 @@ public class Chargement extends JFrame
 		min3=temps3.getMinutes();
 		sec3=temps3.getSecondes();
 
-		partie1 = new JButton("<html>  Enregistrement  1<br>Temps="+formatage(min1)+":"+formatage(sec1)+"</html>");
-		partie2 = new JButton("<html>  Enregistrement  2<br>Temps="+formatage(min2)+":"+formatage(sec2)+"</html>");
-		partie3 = new JButton("<html>  Enregistrement  3<br>Temps="+formatage(min3)+":"+formatage(min3)+"</html>");
+		partie1 = new JButton("<html>  Sauvegarde  1<br>Temps="+formatage(min1)+":"+formatage(sec1)+"</html>");
+		partie2 = new JButton("<html>  Sauvegarde  2<br>Temps="+formatage(min2)+":"+formatage(sec2)+"</html>");
+		partie3 = new JButton("<html>  Sauvegarde  3<br>Temps="+formatage(min3)+":"+formatage(min3)+"</html>");
 		titre = new JLabel(new ImageIcon("images/charger.png"));
 
 		partie1.setBounds(75, 100, 200, 50);
@@ -87,7 +85,6 @@ public class Chargement extends JFrame
 		this.add(titre);
 
 		this.setVisible(true);
-		System.out.println("Sortie du constru");	
 	}
 		
 	private String formatage(int nombre)

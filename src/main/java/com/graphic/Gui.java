@@ -60,6 +60,7 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 	private Map<Integer,Face> faceHmap;
 	private Map<Integer,Piece> piecesHmap;
 	private Temps temps;
+	private List<Temps> listeTemps;
 	private FaceCsvDao facesDao;
 	private PieceCsvDao piecesDao;
 	private PartieCsvDao partieDao;
@@ -134,7 +135,8 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 		fichierFaces = "faces.csv";
 		fichierPieces = "pieces.csv";
 		tempsDao = new TempsCsvDao();
-		temps = tempsDao.readTemps(choixDePartie);
+		listeTemps = tempsDao.readTemps();
+		temps = listeTemps.get(choixDePartie);
 		if (choixDePartie == 0)
 			fichierPartie = "partie.csv";
 		else if (choixDePartie == 1)

@@ -13,11 +13,13 @@ import com.opencsv.CSVReader;
 public class Score implements Comparable<Score>
 {
 	private String nom_joueur;
+	private Temps temps;
 	private int score;
 
-	public Score(String nom_joueur,int score){
+	public Score(String nom_joueur,Temps temps){
 		this.nom_joueur=nom_joueur;
-		this.score=score;
+		this.temps=temps;
+		this.score = temps.getMinutes() * 100 + temps.getSecondes();
 	}
 
 	@Override
@@ -40,20 +42,20 @@ public class Score implements Comparable<Score>
 			return false;
 		Score other = (Score) obj;
 		if (nom_joueur == null) {
-			if (other.nom_joueur != null)
+			if (other.getNom() != null)
 				return false;
 		} else if (!nom_joueur.equals(other.nom_joueur))
 			return false;
-		if (score != other.score)
+		if (score != other.getScore())
 			return false;
 		return true;
 	}
 
-	public String getNom_joueur() {
+	public String getNom() {
 		return nom_joueur;
 	}
 
-	public void setNom_joueur(String nom_joueur) {
+	public void setNom(String nom_joueur) {
 		this.nom_joueur = nom_joueur;
 	}
 
@@ -63,6 +65,14 @@ public class Score implements Comparable<Score>
 
 	public void setScore(int score) {
 		this.score = score;
+	}
+
+	public Temps getTemps() {
+		return temps;
+	}
+
+	public void setTemps(Temps temps) {
+		this.temps = temps;
 	}
 
 	@Override
@@ -89,7 +99,7 @@ public class Score implements Comparable<Score>
 	@Override
 	public String toString() {
 		//", "
-		return nom_joueur +","+ score;
+		return nom_joueur +","+ temps.getMinutes() +","+ temps.getSecondes();
 	}
 	
 }

@@ -86,6 +86,10 @@ public class Eternity_ extends JFrame implements ActionListener
 			//Chargement de partie
 			else if (source == menu.load)
 			{
+				if (chargement != null)
+				{
+					chargement = null;
+				}
 				if (chargement == null)
 				{
 					chargement = new Chargement();
@@ -103,6 +107,10 @@ public class Eternity_ extends JFrame implements ActionListener
 			}
 			else if (source == menu.score)
 			{
+				if (scores != null)
+				{
+					scores = null;
+				}
 				if (scores == null)
 				{
 					scores = new HighScores();
@@ -110,65 +118,66 @@ public class Eternity_ extends JFrame implements ActionListener
 			}
 		}
 
-		//choix de partie
-		else if (source == chargement.partie1)
+		if (chargement != null)
 		{
-			if (chargement != null)
+			//choix de partie
+			if (source == chargement.partie1)
 			{
+				choixDePartie = 1;
+				if (puzzle != null)
+					puzzle = null;
+				if (puzzle == null)
+				{
+					puzzle = new Gui(choixDePartie);
+					puzzle.recommencerLabel.addActionListener(this);
+					puzzle.menuLabel.addActionListener(this);
+				}
+				if (menu != null)
+				{
+					menu.dispose();
+					menu = null;
+				}
 				chargement.dispose();
 				chargement = null;
 			}
-			if (menu != null)
+			else if (source == chargement.partie2)
 			{
-				menu.dispose();
-				menu = null;
-			}
-			choixDePartie = 1;
-			if (puzzle == null)
-			{
-				puzzle = new Gui(choixDePartie);
-				puzzle.recommencerLabel.addActionListener(this);
-				puzzle.menuLabel.addActionListener(this);
-			}
-		}
-		else if (source == chargement.partie2)
-		{
-			if (chargement != null)
-			{
+				choixDePartie = 2;
+				if (puzzle != null)
+					puzzle = null;
+				if (puzzle == null)
+				{
+					puzzle = new Gui(choixDePartie);
+					puzzle.recommencerLabel.addActionListener(this);
+					puzzle.menuLabel.addActionListener(this);
+				}
+				if (menu != null)
+				{
+					menu.dispose();
+					menu = null;
+				}
 				chargement.dispose();
 				chargement = null;
 			}
-			if (menu != null)
+			else if (source == chargement.partie3)
 			{
-				menu.dispose();
-				menu = null;
-			}
-			choixDePartie = 2;
-			if (puzzle == null)
-			{
-				puzzle = new Gui(choixDePartie);
-				puzzle.recommencerLabel.addActionListener(this);
-				puzzle.menuLabel.addActionListener(this);
-			}
-		}
-		else if (source == chargement.partie3)
-		{
-			if (chargement != null)
-			{
+				System.out.println("Le 3 est détecté");
+				choixDePartie = 3;
+				if (puzzle != null)
+					puzzle = null;
+				if (puzzle == null)
+				{
+					puzzle = new Gui(choixDePartie);
+					puzzle.recommencerLabel.addActionListener(this);
+					puzzle.menuLabel.addActionListener(this);
+				}
+				if (menu != null)
+				{
+					menu.dispose();
+					menu = null;
+				}
 				chargement.dispose();
 				chargement = null;
-			}
-			if (menu != null)
-			{
-				menu.dispose();
-				menu = null;
-			}
-			choixDePartie = 3;
-			if (puzzle == null)
-			{
-				puzzle = new Gui(choixDePartie);
-				puzzle.recommencerLabel.addActionListener(this);
-				puzzle.menuLabel.addActionListener(this);
 			}
 		}
 	}
