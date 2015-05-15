@@ -9,8 +9,7 @@ public class Eternity
 {
 	public static void main(String[] args)
 	{
-		//Lancement de l'interface graphique
-		Gui interfaceGraphique = new Gui();
-		interfaceGraphique.setVisible(true);
+		//Wrapper
+		Eternity_ eternity = new Eternity_();
 	}
 }

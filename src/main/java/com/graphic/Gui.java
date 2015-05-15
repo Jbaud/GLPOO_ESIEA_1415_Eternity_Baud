@@ -28,7 +28,7 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 	private int taille;
 
 	//Creation des panels 
-	private JPanel panelOutil;
+	private JLabel panelOutil;
 	private JPanel panelPuzzle;
 
 	//Creation barre de menu
@@ -49,7 +49,8 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 	private JLabel chronoLabel;
 	private JButton droiteLabel;
 	private JButton gaucheLabel;
-	private JButton menuLabel;
+	public JButton menuLabel;
+	public JButton recommencerLabel;
 	private JButton sauveLabel;
 
 	//Elements de jeu
@@ -58,12 +59,15 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 	private String fichierPartie;
 	private Map<Integer,Face> faceHmap;
 	private Map<Integer,Piece> piecesHmap;
+	private Temps temps;
 	private FaceCsvDao facesDao;
 	private PieceCsvDao piecesDao;
 	private PartieCsvDao partieDao;
+	private TempsCsvDao tempsDao;
 	private Partie[][] partie;
 	private JButton testCerveau;
 	private SuperpoRotateIcon imageComposeeTournee;
+	private Color violet;
 
 	//Variables evenementielles
 	private Boolean isPieceSelectionnee;
@@ -72,31 +76,35 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 	private Piece tempPiece;
 	private Orientation tempOrientation;
 	private Verification verif;
-	private SavePartie save = new SavePartie();
-	
-	public Gui()
+	private SavePartie save;
+	private int choixDePartie;
+
+	//Variables pour le chrono
+	private Timer chrono;
+    private int ticChrono;
+    private ActionListener fonctionnementChrono;
+    private int minute;
+    private int seconde;
+    private String minString;
+    private String secString;
+
+	public Gui(int choixDePartie)
 	{
 		//appel au constructeur de la classe mère
 		super();
 		System.out.println("Graphic User Interface is being set");
+		this.choixDePartie = choixDePartie;
 
 		//initialisations diverses
 		initFenetre();
 		initObjects();
 		initBarreMenu();
 		initPanel();
+		initChrono();
 		initPartie();
 		initPlateau();
-
-		//initialisation des var d'event
-		isPieceSelectionnee = false;
-		xSelect = 0;
-		ySelect = 0;
-		tempPiece = null;
-		tempOrientation = null;
-		verif = new Verification(partie);
-		chrono = new Timer(1000, marche);		
-   		chrono.start();
+		initEvent();
+	
 		//ajout des panel à la frame
 		this.add(panelPuzzle);
 		this.add(panelOutil);
@@ -105,11 +113,38 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 		this.setVisible(true);
 	}
 
+	private void initFenetre()
+	{
+		frame = this;
+		curseurFleche = new Cursor(Cursor.DEFAULT_CURSOR);
+
+		//proprietes de la fenetre
+		this.setTitle("Eternity");
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setSize(900,675);
+		this.setLocationRelativeTo(null);
+		this.setResizable(false);
+
+		//Curseur fleche
+		setCursor(curseurFleche);
+	}
+
 	private void initPartie()
 	{
 		fichierFaces = "faces.csv";
 		fichierPieces = "pieces.csv";
-		fichierPartie = "partie.csv";
+		tempsDao = new TempsCsvDao();
+		temps = tempsDao.readTemps(choixDePartie);
+		if (choixDePartie == 0)
+			fichierPartie = "partie.csv";
+		else if (choixDePartie == 1)
+			fichierPartie = "partie1.csv";
+		else if (choixDePartie == 2)
+			fichierPartie = "partie2.csv";
+		else if (choixDePartie == 3)
+			fichierPartie = "partie3.csv";
+		ticChrono = temps.getMinutes()*60 + temps.getSecondes();
+
 		partie = new Partie[taille][taille];
 		facesDao = new FaceCsvDao();
 		faceHmap = facesDao.parser(fichierFaces,",");
@@ -219,42 +254,42 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 		droiteLabel = new JButton("",imageFlecheDroite);
 		gaucheLabel = new JButton("",imageFlecheGauche);
 		menuLabel = new JButton("Menu");
+		recommencerLabel = new JButton("Recommencer");
 		sauveLabel = new JButton("Sauvegarder");
+
+		//cosmetique :)
+		violet = new Color (125,36,124);
+		menuLabel.setBackground(violet);
+		menuLabel.setForeground(Color.white);
+		menuLabel.setOpaque(true);
+		recommencerLabel.setBackground(violet);
+		recommencerLabel.setForeground(Color.white);
+		recommencerLabel.setOpaque(true);
+		sauveLabel.setBackground(violet);
+		sauveLabel.setForeground(Color.white);
+		sauveLabel.setOpaque(true);
+		chronoLabel.setForeground(Color.white);
+
 
 		//ajout de l'actionListener
 		droiteLabel.addMouseListener(this);
 		gaucheLabel.addMouseListener(this);
 		menuLabel.addMouseListener(this);
+		recommencerLabel.addMouseListener(this);
 		sauveLabel.addMouseListener(this);
 
 		//taille pour les tableaux
 		taille = 4;
 	}
 
-	private void initFenetre()
-	{
-		frame = this;
-		curseurFleche = new Cursor(Cursor.DEFAULT_CURSOR);
-
-		//proprietes de la fenetre
-		this.setTitle("Eternity");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(900,675);
-		this.setLocationRelativeTo(null);
-		this.setResizable(false);
-
-		//Curseur fleche
-		setCursor(curseurFleche);
-	}
-
 	private void initPanel()
 	{
 		plateau = null;
-		panelOutil = new JPanel();
+		panelOutil = new JLabel(new ImageIcon("images/fondMenu.png"));
 		panelPuzzle = new JPanel();
 
 		//Setting des dimensions des panel
-		panelPuzzle.setSize(new Dimension(620,620));
+		panelPuzzle.setSize(new Dimension(625,620));
 		panelPuzzle.setLocation(0,0);
 		panelPuzzle.setLayout(null);
 		panelOutil.setPreferredSize(new Dimension(350,450));
@@ -264,16 +299,18 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 		//ajout des composants dans les panel
 		panelOutil.add(chronoLabel);
 		panelOutil.add(menuLabel);
+		panelOutil.add(recommencerLabel);
 		panelOutil.add(sauveLabel);
 		panelOutil.add(droiteLabel);
 		panelOutil.add(gaucheLabel);
 
 		//Positions et taille des composants du panel outil
-		chronoLabel.setBounds(700,50,250,50);
+		chronoLabel.setBounds(680,50,250,50);
 		droiteLabel.setBounds(655,150,100,150);
 		gaucheLabel.setBounds(760,150,100,150);
-		menuLabel.setBounds(660,400,200,50);
-		sauveLabel.setBounds(660,475,200,50);
+		menuLabel.setBounds(660,375,200,50);
+		recommencerLabel.setBounds(660, 450, 200, 50);
+		sauveLabel.setBounds(660,525,200,50);
 
 		//retouche esthétique des boutons
 		chronoLabel.setFont(chronoLabel.getFont().deriveFont(50.0f));
@@ -281,6 +318,45 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 		droiteLabel.setBorderPainted(false);
 		gaucheLabel.setContentAreaFilled(false);
 		gaucheLabel.setBorderPainted(false);
+	}
+
+	private void initEvent()
+	{
+		//initialisation des var d'event
+		isPieceSelectionnee = false;
+		xSelect = 0;
+		ySelect = 0;
+		tempPiece = null;
+		tempOrientation = null;
+		verif = new Verification(partie);
+		save = new SavePartie();
+	}
+
+	private void initChrono()
+	{
+		ticChrono = 0;
+		fonctionnementChrono = new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e1)
+			{
+				ticChrono++;
+
+				minute = ticChrono/60;
+				seconde = ticChrono%60;
+
+				minString = Integer.toString(minute);
+				if (minute < 10)
+					minString = "0" + Integer.toString(minute);
+
+				secString = Integer.toString(seconde);
+				if (seconde < 10)
+					secString = "0" + Integer.toString(seconde);
+
+				chronoLabel.setText(minString+":"+secString);		 
+			}
+		};
+		chrono = new Timer(1000, fonctionnementChrono);
+		chrono.start();
 	}
 
 	public void actionPerformed(ActionEvent event)
@@ -304,8 +380,6 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 						{
 							System.out.println("echange");
 							
-						
-
 							partie[xSelect][ySelect].piece = partie[i][j].piece;
 							partie[xSelect][ySelect].orientation = partie[i][j].orientation;
 							partie[i][j].piece = tempPiece;
@@ -379,49 +453,15 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 						System.out.println("Victoire !");
 				}
 			}
-			//click sur le bouton de menu
-			else if (event.getSource() == menuLabel)
-			{
-				//
-			}
+
 			//click sur le bouton de sauvegarde
 			else if (event.getSource() == sauveLabel)
 			{
-				System.out.println("Sauvegarde de la Partie");
 				save.savePartie(partie);
-				System.out.println("Partie Sauvegardee");
 			}
 		}
 	}
 
-	Timer chrono;
-    int valeur = 0;
-    ActionListener marche = new ActionListener()  {
-		  public void actionPerformed(ActionEvent e1)  {
-
-			  valeur++;
-			
-			  int minute = valeur/60;
-	          int seconde = valeur - (minute*60);
-	
-	          String stringMin = Integer.toString(minute);
-	          
-	          if (minute < 10)
-	          {
-	        	  stringMin = "0" + Integer.toString(minute);
-	          }
-	          
-	          String stringSec = Integer.toString(seconde);
-	          
-	          if (seconde < 10)
-	          {
-	        	  stringSec = "0" + Integer.toString(seconde);
-	          }
-
-			  chronoLabel.setText(stringMin+":"+stringSec);		 
-		 }
-     };	
-     
 	public void mouseExited(MouseEvent event)
 	{
 		return;
