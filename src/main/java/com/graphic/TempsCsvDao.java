@@ -46,11 +46,21 @@ public class TempsCsvDao
 	    
 	}
 
-	public void writeTemps(){
-		
+	public void saveTemps(int min, int sec){
+		//on veut garder une liste de taille <=3
+		if (liste_temps.size() == 4) {
+			liste_temps.remove(3);
+		}
+		int index = 0;
+		// On ajoute le nouveau temps en haut de la liste
+		liste_temps.add(1, new Temps(min,sec));
+
 		CSVWriter writer = null;
 		try {
-			writer = new CSVWriter(new FileWriter("temps.csv"), '\t');
+			writer = new CSVWriter(new FileWriter("temps.csv"), ',', 
+				    CSVWriter.NO_QUOTE_CHARACTER, 
+				    CSVWriter.NO_ESCAPE_CHARACTER, 
+				    System.getProperty("line.separator"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -58,8 +68,12 @@ public class TempsCsvDao
 	     // feed in your array (or convert your data to an array)
 	    // String[] entries = "first#second#third".split("#");
 	     for (Temps l : liste_temps) {
-	    	 String[] entries =  {String.valueOf(l.getMinutes()),String.valueOf(l.getSecondes())};
-	    	 writer.writeNext(entries);
+	    	if ((index > 0) && (index < 4))
+	    	{
+	    		String[] entries =  {String.valueOf(l.getMinutes()),String.valueOf(l.getSecondes())};
+	    		writer.writeNext(entries);
+	    	}
+	    	index++;
 		}
 	     try {
 			writer.close();

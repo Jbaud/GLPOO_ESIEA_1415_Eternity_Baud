@@ -79,6 +79,9 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 	private Verification verif;
 	private SavePartie save;
 	private int choixDePartie;
+	private GestionScore gestionScore;
+	private ScoreCsvDao scoreDao;
+	private List<Score> listeScore;
 
 	//Variables pour le chrono
 	private Timer chrono;
@@ -332,6 +335,8 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 		tempOrientation = null;
 		verif = new Verification(partie);
 		save = new SavePartie();
+		scoreDao = new ScoreCsvDao();
+		gestionScore = new GestionScore(scoreDao.read());
 	}
 
 	private void initChrono()
@@ -395,7 +400,18 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 
 						//verif si victoire
 						if(verif.checkVictoire() == true)
-							System.out.println("Victoire !");
+						{
+							listeScore = scoreDao.read();
+							int minScore = minute;
+							int secScore = seconde;
+							if (gestionScore.isHighScore(listeScore,minScore,secScore))
+							{
+								String nom = (String)JOptionPane.showInputDialog(null, "<html>Vous rentrez dans le top 3 des meilleurs scores !<br>Indiquez votre nom :</html>",
+									"Highscore - Félicitations !", JOptionPane.QUESTION_MESSAGE,new ImageIcon("images/victoire.png"),null, "Thierry");
+								if (nom != null)
+									gestionScore.integreScore(listeScore,nom,minScore,secScore);
+							}
+						}
 
 						repaint();
 					}
@@ -412,7 +428,18 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 
 						//verif si victoire
 						if(verif.checkVictoire() == true)
-						System.out.println("Victoire !");
+						{
+							listeScore = scoreDao.read();
+							int minScore = minute;
+							int secScore = seconde;
+							if (gestionScore.isHighScore(listeScore,minScore,secScore))
+							{
+								String nom = (String)JOptionPane.showInputDialog(null, "<html>Vous rentrez dans le top 3 des meilleurs scores !<br>Indiquez votre nom :</html>",
+									"Highscore - Félicitations !", JOptionPane.QUESTION_MESSAGE,new ImageIcon("images/victoire.png"),null, "Thierry");
+								if (nom != null)
+									gestionScore.integreScore(listeScore,nom,minScore,secScore);
+							}
+						}
 
 						repaint();
 
@@ -438,7 +465,19 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 
 					//verif si victoire
 					if(verif.checkVictoire() == true)
-						System.out.println("Victoire !");
+					{
+						listeScore = scoreDao.read();
+						int minScore = minute;
+						int secScore = seconde;
+						if (gestionScore.isHighScore(listeScore,minScore,secScore))
+						{
+							//Object[] options = {"I'm the best !","Non merci je suis modeste"};
+							String nom = (String)JOptionPane.showInputDialog(null, "<html>Vous rentrez dans le top 3 des meilleurs scores !<br>Indiquez votre nom :</html>",
+								"Highscore - Félicitations !", JOptionPane.QUESTION_MESSAGE,new ImageIcon("images/victoire.png"),null, "Thierry");
+							if (nom != null)
+								gestionScore.integreScore(listeScore,nom,minScore,secScore);
+						}
+					}
 				}
 			}
 			//click sur la fleche pour tourner à gauche
@@ -452,7 +491,19 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 
 					//verif si victoire
 					if(verif.checkVictoire() == true)
-						System.out.println("Victoire !");
+					{
+						listeScore = scoreDao.read();
+						int minScore = minute;
+						int secScore = seconde;
+						if (gestionScore.isHighScore(listeScore,minScore,secScore))
+						{
+							//Object[] options = {"I'm the best !","Non merci je suis modeste"};
+							String nom = (String)JOptionPane.showInputDialog(null, "<html>Vous rentrez dans le top 3 des meilleurs scores !<br>Indiquez votre nom :</html>",
+								"Highscore - Félicitations !", JOptionPane.QUESTION_MESSAGE,new ImageIcon("images/victoire.png"),null, "Thierry");
+							if (nom != null)
+								gestionScore.integreScore(listeScore,nom,minScore,secScore);
+						}
+					}
 				}
 			}
 
@@ -460,6 +511,7 @@ public class Gui extends JFrame implements ActionListener,MouseListener
 			else if (event.getSource() == sauveLabel)
 			{
 				save.savePartie(partie);
+				tempsDao.saveTemps(minute,seconde);
 			}
 		}
 	}
